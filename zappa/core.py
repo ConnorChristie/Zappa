@@ -704,13 +704,13 @@ class Zappa(object):
                 if archive_format == 'zip':
                     # Actually put the file into the proper place in the zip
                     # Related: https://github.com/Miserlou/Zappa/pull/716
-                    zipi = zipfile.ZipInfo(os.path.join(root.replace(temp_project_path, '').lstrip(os.sep), filename))
+                    zipi = zipfile.ZipInfo(os.path.join(root.replace(temp_project_path, '').lstrip(os.sep).replace('\\', '/'), filename))
                     zipi.create_system = 3
                     zipi.external_attr = 0o755 << int(16) # Is this P2/P3 functional?
                     with open(os.path.join(root, filename), 'rb') as f:
                         archivef.writestr(zipi, f.read(), compression_method)
                 elif archive_format == 'tarball':
-                    tarinfo = tarfile.TarInfo(os.path.join(root.replace(temp_project_path, '').lstrip(os.sep), filename))
+                    tarinfo = tarfile.TarInfo(os.path.join(root.replace(temp_project_path, '').lstrip(os.sep).replace('\\', '/'), filename))
                     tarinfo.mode = 0o755
 
                     stat = os.stat(os.path.join(root, filename))
